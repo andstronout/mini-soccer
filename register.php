@@ -1,4 +1,11 @@
 <?php
+session_start();
+require "config.php";
+$register = register();
+
+if (isset($_SESSION['login_user'])) {
+  header("location:index.php");
+}
 include "header.php";
 ?>
 
