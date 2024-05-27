@@ -36,40 +36,48 @@ include "header.php";
               </tr>
             </thead>
             <tbody>
-              <?php foreach ($sql_pesanan as $pesanan) : ?>
-                <tr>
-                  <td><?= $no++; ?></td>
-                  <td><strong class="text-white"><?= $pesanan['tanggal']; ?></strong></td>
-                  <td><strong class="text-white"><?= $pesanan['jams']; ?></strong></td>
-                  <td><strong class="text-white">Rp. <?= number_format($pesanan['harga']); ?> ,-</strong></td>
-                  <td><button type="button" class="btn btn-outline-primary text-white" data-toggle="modal" data-target="#lihatbuktiModal<?= $pesanan['id_pesanan'] ?>">
-                      Lihat Bukti
-                    </button>
+              <?php if ($sql_pesanan->num_rows > 0) { ?>
+                <?php foreach ($sql_pesanan as $pesanan) : ?>
+                  <tr>
+                    <td><?= $no++; ?></td>
+                    <td><strong class="text-white"><?= $pesanan['tanggal']; ?></strong></td>
+                    <td><strong class="text-white"><?= $pesanan['jams']; ?></strong></td>
+                    <td><strong class="text-white">Rp. <?= number_format($pesanan['harga']); ?> ,-</strong></td>
+                    <td><button type="button" class="btn btn-outline-primary text-white" data-toggle="modal" data-target="#lihatbuktiModal<?= $pesanan['id_pesanan'] ?>">
+                        Lihat Bukti
+                      </button>
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="lihatbuktiModal<?= $pesanan['id_pesanan'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Bukti Bayar</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            <div class="card bg-dark text-white">
-                              <img src="../images/bukti_bayar/<?= $pesanan['bukti_bayar']; ?>" class="card-img" alt="...">
+                      <!-- Modal -->
+                      <div class="modal fade" id="lihatbuktiModal<?= $pesanan['id_pesanan'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Bukti Bayar</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
                             </div>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <div class="modal-body">
+                              <div class="card bg-dark text-white">
+                                <img src="../images/bukti_bayar/<?= $pesanan['bukti_bayar']; ?>" class="card-img" alt="...">
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </td>
+                  </tr>
+                <?php endforeach ?>
+              <?php } else { ?>
+                <tr>
+                  <td colspan="5" class="text-center text-white">
+                    Belum pernah booking, silahkan booking <a href="index.php" class="btn btn-outline-primary text-white">di sini</a>
                   </td>
                 </tr>
-              <?php endforeach ?>
+              <?php } ?>
             </tbody>
           </table>
         </div>

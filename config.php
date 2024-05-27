@@ -66,7 +66,7 @@ function register()
       echo "
             <script>
             alert('Email sudah digunakan');
-            document.location.href = 'registrasi.php';
+            document.location.href = 'register.php';
             </script>
             ";
     } else {
