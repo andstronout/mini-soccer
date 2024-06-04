@@ -2,11 +2,14 @@
 session_start();
 require "config.php";
 include "header.php";
+
+// Set timezone to Indonesia
+date_default_timezone_set('Asia/Jakarta');
+
+// Fetch schedules
 $sql_jam = sql("SELECT * FROM jadwal");
 $no = 1;
-
 ?>
-
 
 <!-- Home -->
 <div class="hero overlay" style="background-image: url('images/bg_1.jpg');">
@@ -54,7 +57,7 @@ $no = 1;
                 <th>P</th>
                 <th>Waktu</th>
                 <th>Status</th>
-                <th> </th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -109,7 +112,5 @@ $no = 1;
     </div>
   </div>
 </div> <!-- .site-section -->
-
-
 
 <?php include "footer.php"; ?>
