@@ -1,10 +1,11 @@
 <?php
 session_start();
 require "../config.php";
-if (!isset($_SESSION["login_admin"])) {
+if (!isset($_SESSION["login_owner"])) {
   header("location:../login.php");
 }
 
+// $sql_sewa = sql("SELECT * FROM sewa INNER JOIN produk ON sewa.id_produk=produk.id_produk INNER JOIN jadwal ON sewa.id_jadwal=jadwal.id_jadwal");
 $no = 1;
 
 include "header.php";
@@ -16,7 +17,7 @@ include "header.php";
 
   <!-- Page Heading -->
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Data Transaksi</h1>
+    <h1 class="h3 mb-0 text-gray-800">Data Penyewaan</h1>
   </div>
 
   <!-- Content Row -->
@@ -34,7 +35,7 @@ include "header.php";
         </div>
         <div class="col-auto mt-4">
           <button type="submit" class="btn btn-secondary btn-sm" name="simpan">Simpan</button>
-          <a href="daftar_transaksi.php" class="btn btn-outline-secondary btn-sm">Reset</a>
+          <a href="daftar_produk.php" class="btn btn-outline-secondary btn-sm">Reset</a>
         </div>
       </form>
       <?php
@@ -42,78 +43,51 @@ include "header.php";
         // var_dump($_POST["t_awal"], $_POST["t_akhir"]);
         $_SESSION["awal"] = $_POST["t_awal"];
         $_SESSION["akhir"] = $_POST["t_akhir"];
-        $sql_produk = sql("SELECT * FROM pesanan 
-                INNER JOIN user ON pesanan.id_pelanggan=user.id_user INNER JOIN jadwal ON jadwal.id_jadwal=pesanan.id_jadwal INNER JOIN harga ON jadwal.id_harga=harga.id_harga 
-                WHERE pesanan.tanggal BETWEEN '$_SESSION[awal]' AND '$_SESSION[akhir]'
-                ORDER BY pesanan.tanggal
+        $sql_sewa = sql("SELECT * FROM sewa INNER JOIN produk ON sewa.id_produk=produk.id_produk INNER JOIN jadwal ON sewa.id_jadwal=jadwal.id_jadwal 
+                WHERE sewa.tanggal BETWEEN '$_SESSION[awal]' AND '$_SESSION[akhir]'
+                ORDER BY sewa.tanggal
                 ");
       } else {
-        $sql_produk = sql("SELECT * FROM pesanan INNER JOIN user ON pesanan.id_pelanggan=user.id_user INNER JOIN jadwal ON jadwal.id_jadwal=pesanan.id_jadwal INNER JOIN harga ON jadwal.id_harga=harga.id_harga ORDER BY `pesanan`.`tanggal` DESC");
+        $sql_sewa = sql("SELECT * FROM sewa INNER JOIN produk ON sewa.id_produk=produk.id_produk INNER JOIN jadwal ON sewa.id_jadwal=jadwal.id_jadwal ORDER BY `sewa`.`tanggal` DESC");
       }
       ?>
-      <br>
       <div class="table-responsive">
         <table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
           <thead>
             <tr>
               <th width=5%>No</th>
-              <th>Nama Pelanggan</th>
-              <th>Tanggal Transaksi</th>
+              <th>Item</th>
+              <th>Tanggal</th>
               <th>Jam Main</th>
-              <th>Total Bayar</th>
-              <th>Bukti Bayar</th>
+              <th>Harga</th>
+              <th>Nama Penyewa</th>
               <th>Status</th>
-              <th width=14% class="text-center">Aksi</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
-            <?php foreach ($sql_produk as $transaksi) : ?>
+            <?php foreach ($sql_sewa as $sewa) : ?>
               <tr>
                 <th class="text-center"><?= $no; ?></th>
-                <th><?= $transaksi['nama_user']; ?></th>
-                <th><?= $transaksi['tanggal']; ?></th>
-                <th><?= $transaksi['jams']; ?></th>
-                <th>Rp. <?= number_format($transaksi['harga']); ?></th>
+                <th><?= $sewa['nama_produk']; ?></th>
+                <th><?= $sewa['tanggal']; ?></th>
+                <th><?= $sewa['jams']; ?></th>
+                <th>Rp. <?= number_format($sewa['harga']); ?></th>
+                <th><?= $sewa['nama_penyewa']; ?></th>
+                <th><?= $sewa['status']; ?></th>
                 <th>
-                  <!-- Button trigger modal -->
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lihatbuktiModal<?= $transaksi['id_pesanan'] ?>">
-                    Lihat Bukti
-                  </button>
-
-                  <!-- Modal -->
-                  <div class="modal fade" id="lihatbuktiModal<?= $transaksi['id_pesanan'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLabel">Bukti Pembayaran</h5>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                        <div class="modal-body">
-                          <div class="card bg-dark text-white">
-                            <img src="../images/bukti_bayar/<?= $transaksi['bukti_bayar']; ?>" class="card-img" alt="...">
-                          </div>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </th>
-                <th><?= $transaksi['status']; ?></th>
-                <td>
-                  <?php if ($transaksi['status'] == 'Booking') { ?>
-                    <a href="detail_transaksi.php?id=<?= $transaksi['id_pesanan']; ?>" class="btn btn-info btn-sm">
-                      <span class="text">Proses Transaksi</span>
+                  <?php if ($sewa['status'] == 'Booking') { ?>
+                    <a href="mainsewa.php?id=<?= $sewa['id_sewa']; ?>" onclick="return confirm('Are you sure?')" class="btn btn-info btn-sm">
+                      <span class="text">Main</span>
+                    </a>
+                  <?php } elseif ($sewa['status'] == 'Sedang Main') { ?>
+                    <a href="selesaisewa.php?id=<?= $sewa['id_sewa']; ?>" onclick="return confirm('Are you sure?')" class="btn btn-info btn-sm">
+                      <span class="text">Finish</span>
                     </a>
                   <?php } else { ?>
-                    <a href="detail_transaksi.php?id=<?= $transaksi['id_pesanan']; ?>" class="btn btn-success btn-sm">
-                      <span class="text">Lihat detail</span>
-                    </a>
+                    Done
                   <?php } ?>
-                </td>
+                </th>
               </tr>
             <?php
               $no++;
@@ -133,7 +107,7 @@ include "header.php";
 <footer class="sticky-footer bg-white">
   <div class="container my-auto">
     <div class="copyright text-center my-auto">
-      <span>Copyright &copy; Mini Soccer Tirta Salsabila 2024</span>
+      <span>Copyright &copy; Nadia Ryan Jewelry 2023</span>
     </div>
   </div>
 </footer>
@@ -169,7 +143,6 @@ include "header.php";
   </div>
 </div>
 
-
 <!-- Bootstrap core JavaScript-->
 <script src="../sbadmin/vendor/jquery/jquery.min.js"></script>
 <script src="../sbadmin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -179,6 +152,13 @@ include "header.php";
 
 <!-- Custom scripts for all pages-->
 <script src="../sbadmin/js/sb-admin-2.min.js"></script>
+
+<!-- Page level plugins -->
+<script src="../sbadmin/vendor/chart.js/Chart.min.js"></script>
+
+<!-- Page level custom scripts -->
+<script src="../sbadmin/js/demo/chart-area-demo.js"></script>
+<script src="../sbadmin/js/demo/chart-pie-demo.js"></script>
 
 <!-- Datatables -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
@@ -191,22 +171,23 @@ include "header.php";
       dom: 'Bfrtip',
       buttons: [{
           extend: 'excelHtml5',
-          title: 'Data Transaksi',
+          title: 'Data Produk',
           exportOptions: {
-            columns: [0, 1, 2, 3, 4, 6]
+            columns: [0, 1, 2, 3, 4, 5, 6]
           }
         },
         {
           extend: 'pdfHtml5',
-          title: 'Data Transaksi',
+          title: 'Data Produk',
           exportOptions: {
-            columns: [0, 1, 2, 3, 4, 6]
+            columns: [0, 1, 2, 3, 4, 5, 6]
           }
         }
       ]
     });
   });
 </script>
+
 
 </body>
 
