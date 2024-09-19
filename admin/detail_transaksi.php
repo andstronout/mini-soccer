@@ -69,6 +69,7 @@ include "header.php";
           <button type="submit" class="btn btn-outline-primary" name="submit" onclick="return confirm('Are you sure you?')">
             Proses Pesanan
           </button>
+          <a href="cancel.php?id=<?= $pesanan['id_pesanan']; ?>" class="btn btn-outline-danger" onclick="return confirm('Are you sure you?')">Cancel Pesanan</a>
         <?php } ?>
       </form>
     </div>

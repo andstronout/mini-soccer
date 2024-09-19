@@ -63,7 +63,6 @@ include "header.php";
               <th>Total Bayar</th>
               <th>Bukti Bayar</th>
               <th>Status</th>
-              <th width=14% class="text-center">Aksi</th>
             </tr>
           </thead>
           <tbody>
@@ -103,17 +102,6 @@ include "header.php";
                   </div>
                 </th>
                 <th><?= $transaksi['status']; ?></th>
-                <td>
-                  <?php if ($transaksi['status'] == 'Booking') { ?>
-                    <a href="detail_transaksi.php?id=<?= $transaksi['id_pesanan']; ?>" class="btn btn-info btn-sm">
-                      <span class="text">Proses Transaksi</span>
-                    </a>
-                  <?php } else { ?>
-                    <a href="detail_transaksi.php?id=<?= $transaksi['id_pesanan']; ?>" class="btn btn-success btn-sm">
-                      <span class="text">Lihat detail</span>
-                    </a>
-                  <?php } ?>
-                </td>
               </tr>
             <?php
               $no++;

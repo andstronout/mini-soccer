@@ -35,7 +35,7 @@ include "header.php";
           <input type="date" class="form-control" name="t_akhir" required>
         </div>
         <div class="col-auto mt-4">
-          <button type="submit" class="btn btn-secondary btn-sm" name="simpan">Simpan</button>
+          <button type="submit" class="btn btn-secondary btn-sm" name="simpan">Cari</button>
           <a href="daftar_produk.php" class="btn btn-outline-secondary btn-sm">Reset</a>
         </div>
       </form>

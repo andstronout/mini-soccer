@@ -37,7 +37,7 @@
 
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
-        <div class="sidebar-brand-text mx-3">Admin <br> <sup> Mini Soccer</sup></div>
+        <div class="sidebar-brand-text mx-3">Owner <br> <sup> Mini Soccer</sup></div>
       </a>
 
       <!-- Divider -->
@@ -62,19 +62,19 @@
       <li class="nav-item">
         <a class="nav-link" href="daftar_pelanggan.php">
           <i class="fas fa-fw fa-table"></i>
-          <span>Kelola Pelanggan</span></a>
+          <span>Daftar Pelanggan</span></a>
       </li>
-      <!-- Nav Item - Kelola Produk -->
+      <!-- Nav Item - Daftar Produk -->
       <li class="nav-item">
         <a class="nav-link" href="daftar_produk.php">
           <i class="fas fa-fw fa-table"></i>
-          <span>Kelola Penyewaan</span></a>
+          <span>Daftar Penyewaan</span></a>
       </li>
-      <!-- Nav Item - Kelola Transaksi -->
+      <!-- Nav Item - Daftar Transaksi -->
       <li class="nav-item">
         <a class="nav-link" href="daftar_transaksi.php">
           <i class="fas fa-fw fa-table"></i>
-          <span>Kelola Transaksi</span></a>
+          <span>Daftar Transaksi</span></a>
       </li>
 
       <!-- Divider -->
